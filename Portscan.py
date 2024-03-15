@@ -21,9 +21,10 @@ def check_ports(host, start_port, end_port):
         finally:
             # Close the socket
             s.close()
-              if __name__ == "__main__":
+
+if __name__ == "__main__":
     # Prompt the user for the host/IP address, start port, and end port
-host = input("Enter the host/IP address: ")
+    host = input("Enter the host/IP address: ")
     start_port = int(input("Enter the start port: "))
     end_port = int(input("Enter the end port: "))
     
