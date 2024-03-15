@@ -1,0 +1,41 @@
+#!/bin/bash
+
+function banner_grab {
+    local host=$1
+    local port=$2
+    local result
+
+    result=$(echo -e "QUIT\r\n" | nc -w 3 $host $port)
+    if [ $? -eq 0 ]; then
+        echo "$port open"
+        echo "$result"
+    else
+        echo "$port closed or unreachable"
+    fi
+}
+
+function check_ports {
+    local host=$1
+    local start_port=$2
+    local end_port=$3
+
+    echo -n "Scanning for ports... "
+    for _ in {1..6}; do
+        echo -n "."
+        sleep 0.5
+    done
+    echo -e "\n"
+
+    open_ports=()
+    for ((port=start_port; port<=end_port; port++)); do
+        banner_grab $host $port &
+        sleep 0.1
+    done
+    wait
+}
+
+read -p "Enter the host/IP address: " host
+read -p "Enter the start port: " start_port
+read -p "Enter the end port: " end_port
+
+check_ports $host $start_port $end_port
